@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CookieClicker - Statistiken</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="nav-content">
+                <h1>🍪 CookieClicker</h1>
+                <div class="nav-right">
+                    <span id="username" class="username"></span>
+                    <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="stats-card">
+            <h2>📊 Spiel-Statistiken</h2>
+
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p>Lade Statistiken...</p>
+            </div>
+
+            <div id="statsContent" style="display: none;">
+                <div class="stat-item">
+                    <div class="stat-label">Gesamt anzahl an Games</div>
+                    <div class="stat-value" id="totalGames">0</div>
+                </div>
+
+                <div class="stat-details">
+                    <p class="stat-description">
+                        Dies ist die Gesamtzahl aller gespeicherten Spiele in der Datenbank.
+                    </p>
+                </div>
+            </div>
+
+            <div id="error" class="error-message" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // Prüfe ob User eingeloggt ist
+        if (!isAuthenticated()) {
+            window.location.href = 'login.html';
+        }
+
+        // Zeige Username
+        const currentUser = getCurrentUser();
+        if (currentUser) {
+            document.getElementById('username').textContent = currentUser;
+        }
+
+        // Logout Button
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            logout();
+            window.location.href = 'login.html';
+        });
+
+        // Lade Statistiken
+        async function loadStats() {
+            try {
+                const token = getToken();
+
+                const response = await fetch('http://localhost:8082/api/stats', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        // Token ungültig - redirect zu Login
+                        logout();
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    throw new Error('Fehler beim Laden der Statistiken');
+                }
+
+                const data = await response.json();
+
+                // Verstecke Loading, zeige Content
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('statsContent').style.display = 'block';
+
+                // Zeige Anzahl mit Animation
+                animateCounter('totalGames', data.totalGames, 1000);
+
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                document.getElementById('loading').style.display = 'none';
+                showError('Fehler beim Laden der Statistiken: ' + error.message);
+            }
+        }
+
+        function animateCounter(elementId, targetValue, duration) {
+            const element = document.getElementById(elementId);
+            const start = 0;
+            const increment = targetValue / (duration / 16); // 60 FPS
+            let current = start;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= targetValue) {
+                    current = targetValue;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current);
+            }, 16);
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        // Lade Statistiken beim Seitenaufruf
+        loadStats();
+    </script>
+</body>
+</html>
+

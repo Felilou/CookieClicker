@@ -30,6 +30,9 @@
         <java.version>25</java.version>
     </properties>
     <packaging>pom</packaging>
-    <modules></modules>
+    <modules>
+        <module>auth-service</module>
+        <module>persistance-service</module>
+    </modules>
 
 </project>
