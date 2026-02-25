@@ -1,12 +1,12 @@
 package at.spengergasse.persistanceservice.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record GameDTO(
-        String player1Name,
-        String player2Name,
-        int player1Score,
-        int player2Score,
+        String winnerUsername,
+        List<PlayerScore> players,
         LocalDateTime timestamp
 ) {
+    public record PlayerScore(String username, int score) {}
 }

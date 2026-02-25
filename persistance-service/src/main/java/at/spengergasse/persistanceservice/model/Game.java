@@ -1,10 +1,11 @@
 package at.spengergasse.persistanceservice.model;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,10 +14,11 @@ import java.time.LocalDateTime;
 @Builder
 public class Game extends AbstractPersistable<Long> {
 
-    private final String player1Name;
-    private final String player2Name;
-    private final int player1Score;
-    private final int player2Score;
-    private final LocalDateTime timestamp;
+    private String winnerUsername;
+    private LocalDateTime timestamp;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "game_player_results", joinColumns = @JoinColumn(name = "game_id"))
+    private List<PlayerResult> playerResults;
 
 }

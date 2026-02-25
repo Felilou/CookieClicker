@@ -3,6 +3,7 @@ package at.spengergasse.persistanceservice.service;
 import at.spengergasse.persistanceservice.dto.GameDTO;
 import at.spengergasse.persistanceservice.dto.PersistGameRequest;
 import at.spengergasse.persistanceservice.model.Game;
+import at.spengergasse.persistanceservice.model.PlayerResult;
 import at.spengergasse.persistanceservice.repository.GameRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,21 +26,32 @@ public class StatsService {
     }
 
     public List<GameDTO> getGamesByUser(String username) {
-        return gameRepository.findByPlayerName(username);
+        return gameRepository.findByPlayerName(username).stream()
+                .map(this::toDTO)
+                .toList();
     }
 
-    public Game addGame(PersistGameRequest persistGameRequest) {
-        log.info("Adding game: {}", persistGameRequest);
+    public Game addGame(PersistGameRequest request) {
+        log.info("Adding game, winner: {}, players: {}", request.winnerUsername(), request.players().size());
+
+        List<PlayerResult> results = request.players().stream()
+                .map(p -> new PlayerResult(p.username(), p.score()))
+                .toList();
 
         Game game = Game.builder()
-                .player1Name(persistGameRequest.player1Name())
-                .player2Name(persistGameRequest.player2Name())
-                .player1Score(persistGameRequest.player1Score())
-                .player2Score(persistGameRequest.player2Score())
+                .winnerUsername(request.winnerUsername())
+                .playerResults(results)
                 .timestamp(LocalDateTime.now())
                 .build();
 
         return gameRepository.save(game);
     }
-}
 
+    private GameDTO toDTO(Game game) {
+        List<GameDTO.PlayerScore> players = game.getPlayerResults().stream()
+                .map(pr -> new GameDTO.PlayerScore(pr.getUsername(), pr.getScore()))
+                .toList();
+        return new GameDTO(game.getWinnerUsername(), players, game.getTimestamp());
+    }
+
+}

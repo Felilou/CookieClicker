@@ -1,186 +1,75 @@
-# 🍪 CookieClicker Frontend
+# Nuxt Minimal Starter
 
-Ein modernes Frontend mit Login, Registrierung und geschützter Stats-Seite.
+Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-## 📦 Features
+## Setup
 
-- ✅ **Login** - User-Authentifizierung mit JWT
-- ✅ **Registrierung** - Neue User anlegen
-- ✅ **Logout** - Session beenden
-- ✅ **Stats-Seite** - Zeigt Gesamtanzahl der Games (nur für authentifizierte User)
-- ✅ **Responsive Design** - Funktioniert auf allen Geräten
-- ✅ **Moderne UI** - Gradient Design mit Animationen
+Make sure to install dependencies:
 
-## 🚀 Starten
+```bash
+# npm
+npm install
 
-### Voraussetzungen
+# pnpm
+pnpm install
 
-- Backend Services müssen laufen:
-  - **Auth-Service** auf Port 8081
-  - **Persistence-Service** auf Port 8082
+# yarn
+yarn install
 
-### Option 1: Mit Python HTTP Server
-
-```powershell
-cd C:\Users\Derec\IdeaProjects\CockieClicker\frontend
-python -m http.server 3000
+# bun
+bun install
 ```
 
-Öffne: http://localhost:3000/login.html
+## Development Server
 
-### Option 2: Mit Node.js http-server
+Start the development server on `http://localhost:3000`:
 
-```powershell
-cd C:\Users\Derec\IdeaProjects\CockieClicker\frontend
-npx http-server -p 3000
+```bash
+# npm
+npm run dev
+
+# pnpm
+pnpm dev
+
+# yarn
+yarn dev
+
+# bun
+bun run dev
 ```
 
-Öffne: http://localhost:3000/login.html
+## Production
 
-### Option 3: Mit Live Server (VS Code Extension)
+Build the application for production:
 
-1. Installiere "Live Server" Extension in VS Code
-2. Rechtsklick auf `login.html`
-3. "Open with Live Server"
+```bash
+# npm
+npm run build
 
-## 📱 Seiten
+# pnpm
+pnpm build
 
-### login.html
-- Login-Formular
-- Link zur Registrierung
+# yarn
+yarn build
 
-### signup.html
-- Registrierungs-Formular
-- Felder: Username, Email, Vorname, Nachname, Passwort
-- Link zum Login
-
-### stats.html
-- **Geschützte Seite** - Nur mit JWT-Token zugänglich
-- Zeigt Gesamtanzahl der Games aus der Datenbank
-- Navbar mit Username und Logout-Button
-- Automatische Weiterleitung zum Login wenn nicht authentifiziert
-
-## 🔐 Authentifizierung
-
-Die Authentifizierung erfolgt über JWT Tokens:
-
-1. **Login/Registrierung** → JWT Token von Auth-Service
-2. **Token wird in LocalStorage gespeichert**
-3. **Jeder API-Call** → Token im Authorization Header
-4. **Logout** → Token wird aus LocalStorage gelöscht
-
-## 🎨 Design
-
-- **Gradient Background** - Lila/Blau
-- **Weiße Cards** - Mit Shadow-Effekt
-- **Responsive** - Mobile-First Design
-- **Animationen** - Smooth Transitions & Counter-Animation
-
-## 🛠️ Dateien
-
-```
-frontend/
-├── login.html          # Login-Seite
-├── signup.html         # Registrierungs-Seite
-├── stats.html          # Stats-Seite (geschützt)
-├── auth.js             # Auth-Logik (login, signup, logout)
-├── styles.css          # Styling
-└── README.md           # Diese Datei
+# bun
+bun run build
 ```
 
-## 📡 API Calls
+Locally preview production build:
 
-### Auth-Service (Port 8081)
+```bash
+# npm
+npm run preview
 
-```javascript
-// Login
-POST /auth/login
-Body: { username, password }
-Response: { access_token, ... }
+# pnpm
+pnpm preview
 
-// Registrierung
-POST /auth/register
-Body: { username, email, password, firstName, lastName }
-Response: { username, message }
+# yarn
+yarn preview
+
+# bun
+bun run preview
 ```
 
-### Persistence-Service (Port 8082)
-
-```javascript
-// Stats abrufen
-GET /api/stats
-Headers: { Authorization: "Bearer <token>" }
-Response: { totalGames: 42 }
-```
-
-## 🧪 Testen
-
-1. **Starte Backend Services:**
-   ```powershell
-   # Terminal 1
-   cd auth-service
-   mvn spring-boot:run
-   
-   # Terminal 2
-   cd persistance-service
-   mvn spring-boot:run
-   ```
-
-2. **Starte Frontend:**
-   ```powershell
-   cd frontend
-   python -m http.server 3000
-   ```
-
-3. **Öffne Browser:**
-   - http://localhost:3000/login.html
-
-4. **Registriere einen User:**
-   - Klicke auf "Jetzt registrieren"
-   - Fülle Formular aus
-   - Nach erfolgreicher Registrierung → Weiterleitung zum Login
-
-5. **Login:**
-   - Username und Passwort eingeben
-   - Nach erfolgreichem Login → Weiterleitung zu Stats
-
-6. **Stats ansehen:**
-   - Siehst Gesamtanzahl der Games
-   - Logout-Button oben rechts
-
-## 🐛 Troubleshooting
-
-### CORS Fehler
-- Stelle sicher, dass CORS in beiden Backend-Services aktiviert ist
-- Prüfe ob `CorsConfig.java` in beiden Services vorhanden ist
-
-### "401 Unauthorized" bei Stats
-- Token ist abgelaufen → Neu einloggen
-- Token ist ungültig → LocalStorage leeren und neu einloggen
-
-### Backend nicht erreichbar
-```powershell
-# Prüfe ob Services laufen
-curl http://localhost:8081/auth/login -X POST
-curl http://localhost:8082/api/stats
-```
-
-### LocalStorage leeren
-```javascript
-// In Browser Console
-localStorage.clear();
-```
-
-## 🎯 Nächste Schritte
-
-- [ ] Token Refresh implementieren
-- [ ] Error Handling verbessern
-- [ ] Loading States verfeinern
-- [ ] Weitere Stats hinzufügen
-- [ ] User Profile Page
-- [ ] Game-Management (CRUD)
-
----
-
-**Viel Spaß! 🍪**
-
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

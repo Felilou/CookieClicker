@@ -39,7 +39,7 @@ public class StatsController {
 
     @PostMapping("/game")
     public ResponseEntity<Void> addGame(@RequestBody PersistGameRequest request) {
-        log.info("Add game request received: {} vs {}", request.player1Name(), request.player2Name());
+        log.info("Add game request received: {}", request);
 
         long id = statsService.addGame(request).getId();
 

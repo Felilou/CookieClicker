@@ -53,6 +53,7 @@ public class KeycloakService {
         formData.add("client_id", clientId);
         formData.add("client_secret", clientSecret);
         formData.add("grant_type", "password");
+        formData.add("scope", "openid"); // <-- wichtig für UserInfo
         formData.add("username", loginRequest.getUsername());
         formData.add("password", loginRequest.getPassword());
 

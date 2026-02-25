@@ -1,8 +1,8 @@
-package at.spengergasse.persistanceservice.dto;
+package at.spengergasse.gameservice.dto;
 
 import java.util.List;
 
-public record PersistGameRequest(
+public record SaveGameRequest(
         List<PlayerScore> players,
         String winnerUsername
 ) {
