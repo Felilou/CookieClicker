@@ -34,6 +34,8 @@
         <module>auth-service</module>
         <module>persistance-service</module>
         <module>game-service</module>
+        <module>service-discovery</module>
+        <module>api-gateway</module>
     </modules>
 
 </project>

@@ -1,5 +1,3 @@
-const AUTH_URL = 'http://localhost:8081'
-
 interface TokenResponse {
   access_token: string
   expires_in: number
@@ -8,6 +6,8 @@ interface TokenResponse {
 }
 
 export const useAuth = () => {
+  const { public: { apiBase } } = useRuntimeConfig()
+
   const token    = useState<string | null>('auth.token',    () => null)
   const username = useState<string | null>('auth.username', () => null)
 
@@ -21,12 +21,12 @@ export const useAuth = () => {
   }
 
   async function login(user: string, password: string) {
-    const res = await $fetch<TokenResponse>(`${AUTH_URL}/auth/login`, {
+    const res = await $fetch<TokenResponse>(`${apiBase}/auth/login`, {
       method: 'POST',
       body: { username: user, password },
     })
 
-    const usernameRes = await $fetch<{ username: string }>(`${AUTH_URL}/auth/username`, {
+    const usernameRes = await $fetch<{ username: string }>(`${apiBase}/auth/username`, {
       headers: { Authorization: `Bearer ${res.access_token}` },
     })
 
@@ -43,7 +43,7 @@ export const useAuth = () => {
     firstName?: string
     lastName?: string
   }) {
-    await $fetch(`${AUTH_URL}/auth/register`, {
+    await $fetch(`${apiBase}/auth/register`, {
       method: 'POST',
       body: data,
     })

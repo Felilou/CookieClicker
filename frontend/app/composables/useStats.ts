@@ -1,5 +1,3 @@
-const PERSISTENCE_URL = 'http://localhost:8082'
-
 export interface PlayerScore {
   username: string
   score: number
@@ -16,13 +14,14 @@ export interface StatsResponse {
 }
 
 export const useStats = () => {
+  const { public: { apiBase } } = useRuntimeConfig()
   const { authHeader } = useAuth()
 
   const fetchGlobalStats = () =>
-    $fetch<StatsResponse>(`${PERSISTENCE_URL}/api/stats`)
+    $fetch<StatsResponse>(`${apiBase}/api/stats`)
 
   const fetchMyGames = () =>
-    $fetch<GameDTO[]>(`${PERSISTENCE_URL}/api/stats/my-games`, {
+    $fetch<GameDTO[]>(`${apiBase}/api/stats/my-games`, {
       headers: { Authorization: authHeader.value },
     })
 

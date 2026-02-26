@@ -7,6 +7,7 @@ const route  = useRoute()
 const router = useRouter()
 const toast  = useToast()
 const { username } = useAuth()
+const { public: { apiBase } } = useRuntimeConfig()
 
 const roomId    = route.params.id as string
 const isCreating = route.query.create === 'true'
@@ -56,7 +57,7 @@ async function connect() {
   const SockJS     = (await import('sockjs-client')).default
 
   stompClient = new Client({
-    webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+    webSocketFactory: () => new SockJS(`${apiBase}/ws`),
     onConnect: () => {
       stompClient.subscribe(`/room/${roomId}`, (msg: any) => {
         const state: GameState = JSON.parse(msg.body)

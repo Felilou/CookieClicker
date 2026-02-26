@@ -1,0 +1,18 @@
+.git
+.idea
+*.iml
+
+# Maven build output
+**/target/
+
+# Node.js
+frontend/node_modules/
+frontend/.nuxt/
+frontend/.output/
+
+# Environment file (config passed via docker-compose environment:)
+.env
+
+# IDE / OS
+*.class
+*.log

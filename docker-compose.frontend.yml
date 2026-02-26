@@ -1,0 +1,13 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: frontend
+    environment:
+      # HOST_IP: set this in .env to your machine's LAN IP for network access
+      # Leave unset (or localhost) for local-only access
+      NUXT_PUBLIC_API_BASE: http://${HOST_IP:-localhost}:8090
+      NUXT_PUBLIC_WS_BASE: ws://${HOST_IP:-localhost}:8090
+    ports:
+      - "3000:3000"

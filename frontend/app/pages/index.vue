@@ -5,6 +5,7 @@ import type { State } from '~/types/game'
 
 const { username, logout } = useAuth()
 const router = useRouter()
+const { public: { apiBase } } = useRuntimeConfig()
 
 // ─── Rooms ────────────────────────────────────────────────────────────────────
 interface RoomInfo {
@@ -20,7 +21,7 @@ const loadingRooms = ref(false)
 async function fetchRooms() {
   loadingRooms.value = true
   try {
-    rooms.value = await $fetch<RoomInfo[]>('http://localhost:8080/api/rooms')
+    rooms.value = await $fetch<RoomInfo[]>(`${apiBase}/api/rooms`)
   } catch {
     rooms.value = []
   } finally {

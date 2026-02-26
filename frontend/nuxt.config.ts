@@ -8,5 +8,10 @@ export default defineNuxtConfig({
   colorMode: {
     preference: 'dark',
   },
-  
+  runtimeConfig: {
+    public: {
+      apiBase: 'http://localhost:8090',
+      wsBase: 'ws://localhost:8090',
+    },
+  },
 })
