@@ -119,7 +119,7 @@ onUnmounted(() => { stopTimer(); stompClient?.deactivate() })
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-950 text-gray-100">
+  <div class="min-h-screen">
 
     <!-- Header -->
     <header class="border-b border-gray-800 px-6 py-3">

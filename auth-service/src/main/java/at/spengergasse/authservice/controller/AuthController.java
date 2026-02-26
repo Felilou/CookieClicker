@@ -24,23 +24,14 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest) {
         log.info("Registration request received for user: {}", registerRequest.getUsername());
-
         try {
             String username = keycloakService.registerUser(registerRequest);
-            RegisterResponse response = new RegisterResponse(
-                    null, // userId wird von Keycloak generiert
-                    username,
-                    "User registered successfully"
-            );
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new RegisterResponse(null, username, "User registered successfully"));
         } catch (RuntimeException e) {
             log.error("Registration failed: {}", e.getMessage());
-            RegisterResponse response = new RegisterResponse(
-                    null,
-                    registerRequest.getUsername(),
-                    "Registration failed: " + e.getMessage()
-            );
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new RegisterResponse(null, registerRequest.getUsername(), "Registration failed: " + e.getMessage()));
         }
     }
 
@@ -55,11 +46,8 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> getUsername(
             @RequestHeader("Authorization") String authHeader) {
         log.info("Username extraction request received");
-
-        // Extract token from "Bearer <token>"
         String token = authHeader.replace("Bearer ", "");
         String username = keycloakService.getUsernameFromToken(token);
-
         return ResponseEntity.ok(Map.of("username", username));
     }
 
@@ -67,17 +55,12 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> validateToken(
             @RequestHeader("Authorization") String authHeader) {
         log.info("Token validation request received");
-
         try {
             String token = authHeader.replace("Bearer ", "");
             String username = keycloakService.getUsernameFromToken(token);
-            return ResponseEntity.ok(Map.of(
-                    "valid", "true",
-                    "username", username
-            ));
+            return ResponseEntity.ok(Map.of("valid", "true", "username", username));
         } catch (Exception e) {
             return ResponseEntity.ok(Map.of("valid", "false"));
         }
     }
 }
-

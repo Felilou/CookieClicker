@@ -53,7 +53,7 @@ public class KeycloakService {
         formData.add("client_id", clientId);
         formData.add("client_secret", clientSecret);
         formData.add("grant_type", "password");
-        formData.add("scope", "openid"); // <-- wichtig für UserInfo
+        formData.add("scope", "openid");
         formData.add("username", loginRequest.getUsername());
         formData.add("password", loginRequest.getPassword());
 
@@ -82,7 +82,6 @@ public class KeycloakService {
                 authServerUrl, realm);
 
         try {
-            // Call Keycloak UserInfo endpoint to get user details
             var userInfo = webClientBuilder.build()
                     .get()
                     .uri(userInfoUrl)
@@ -104,10 +103,8 @@ public class KeycloakService {
         log.info("Attempting to register user: {}", registerRequest.getUsername());
 
         try {
-            // 1. Get Admin Access Token
             String adminToken = getAdminAccessToken();
 
-            // 2. Create User in Keycloak
             String usersUrl = String.format("%s/admin/realms/%s/users", authServerUrl, realm);
 
             Map<String, Object> userRepresentation = Map.of(
@@ -154,8 +151,7 @@ public class KeycloakService {
     private String getAdminAccessToken() {
         log.info("Getting admin access token");
 
-        String tokenUrl = String.format("%s/realms/master/protocol/openid-connect/token",
-                authServerUrl);
+        String tokenUrl = String.format("%s/realms/master/protocol/openid-connect/token", authServerUrl);
 
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("client_id", "admin-cli");

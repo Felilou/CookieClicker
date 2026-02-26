@@ -33,6 +33,7 @@
     <modules>
         <module>auth-service</module>
         <module>persistance-service</module>
+        <module>game-service</module>
     </modules>
 
 </project>

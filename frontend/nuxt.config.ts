@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   modules: ['@nuxt/ui', '@nuxt/image', '@kgierke/nuxt-basic-auth'],
   css: ['~/assets/css/main.css'],
   colorMode: {
-    preference: 'light',
+    preference: 'dark',
   },
+  
 })

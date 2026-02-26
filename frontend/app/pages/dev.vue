@@ -105,131 +105,147 @@ onUnmounted(wsDisconnect)
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-950 text-gray-100 p-6">
+  <div class="min-h-screen p-6">
     <div class="max-w-7xl mx-auto space-y-4">
 
-      <!-- Header + token bar -->
+      <!-- Header -->
       <div class="flex items-center justify-between">
-        <h1 class="text-xl font-bold text-white">CockieClicker Testbench</h1>
+        <h1 class="text-xl font-bold">CockieClicker Testbench</h1>
         <span class="text-xs text-gray-500">Services must be running locally</span>
       </div>
-      <div class="flex items-center gap-3 rounded-lg bg-gray-900 border border-gray-800 px-4 py-2 text-sm">
-        <span class="text-gray-500 shrink-0">Token:</span>
-        <span v-if="token" class="text-green-400 truncate flex-1 font-mono text-xs">{{ token }}</span>
-        <span v-else class="text-gray-600 italic flex-1">— login to store token —</span>
-        <UButton v-if="token" size="xs" color="neutral" variant="ghost" @click="token = ''">Clear</UButton>
-      </div>
+
+      <!-- Token bar -->
+      <UCard>
+        <div class="flex items-center gap-3 text-sm">
+          <span class="text-gray-500 shrink-0">Token:</span>
+          <span v-if="token" class="text-green-400 truncate flex-1 font-mono text-xs">{{ token }}</span>
+          <span v-else class="text-gray-600 italic flex-1">— login to store token —</span>
+          <UButton v-if="token" size="xs" color="neutral" variant="ghost" @click="token = ''">Clear</UButton>
+        </div>
+      </UCard>
 
       <!-- Three service columns -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
         <!-- ── Auth Service ── -->
-        <div class="rounded-xl bg-gray-900 border border-gray-800 p-5 space-y-4">
-          <h2 class="text-xs font-semibold text-blue-400 uppercase tracking-widest">Auth Service :8081</h2>
+        <UCard>
+          <template #header>
+            <span class="text-xs font-semibold text-blue-400 uppercase tracking-widest">Auth Service :8081</span>
+          </template>
+          <div class="space-y-4">
+            <div class="space-y-2">
+              <p class="text-xs text-gray-600">POST /auth/register</p>
+              <UInput v-model="reg.username" size="sm" placeholder="username" />
+              <UInput v-model="reg.email" size="sm" placeholder="email" />
+              <UInput v-model="reg.password" size="sm" type="password" placeholder="password" />
+              <UInput v-model="reg.firstName" size="sm" placeholder="firstName" />
+              <UInput v-model="reg.lastName" size="sm" placeholder="lastName" />
+              <UButton size="sm" block @click="doRegister">Register</UButton>
+            </div>
 
-          <div class="space-y-2">
-            <p class="text-xs text-gray-600">POST /auth/register</p>
-            <UInput v-model="reg.username" size="sm" placeholder="username" />
-            <UInput v-model="reg.email" size="sm" placeholder="email" />
-            <UInput v-model="reg.password" size="sm" type="password" placeholder="password" />
-            <UInput v-model="reg.firstName" size="sm" placeholder="firstName" />
-            <UInput v-model="reg.lastName" size="sm" placeholder="lastName" />
-            <UButton size="sm" block @click="doRegister">Register</UButton>
+            <USeparator />
+
+            <div class="space-y-2">
+              <p class="text-xs text-gray-600">POST /auth/login</p>
+              <UInput v-model="loginForm.username" size="sm" placeholder="username" />
+              <UInput v-model="loginForm.password" size="sm" type="password" placeholder="password" />
+              <UButton size="sm" block color="primary" @click="doLogin">Login → store token</UButton>
+            </div>
+
+            <USeparator />
+
+            <div class="space-y-2">
+              <p class="text-xs text-gray-600">GET /auth/validate</p>
+              <UButton size="sm" block variant="outline" :disabled="!token" @click="doValidate">Validate token</UButton>
+            </div>
           </div>
-
-          <hr class="border-gray-800" />
-
-          <div class="space-y-2">
-            <p class="text-xs text-gray-600">POST /auth/login</p>
-            <UInput v-model="loginForm.username" size="sm" placeholder="username" />
-            <UInput v-model="loginForm.password" size="sm" type="password" placeholder="password" />
-            <UButton size="sm" block color="primary" @click="doLogin">Login → store token</UButton>
-          </div>
-
-          <hr class="border-gray-800" />
-
-          <div class="space-y-2">
-            <p class="text-xs text-gray-600">GET /auth/validate</p>
-            <UButton size="sm" block variant="outline" :disabled="!token" @click="doValidate">Validate token</UButton>
-          </div>
-        </div>
+        </UCard>
 
         <!-- ── Persistence Service ── -->
-        <div class="rounded-xl bg-gray-900 border border-gray-800 p-5 space-y-4">
-          <h2 class="text-xs font-semibold text-purple-400 uppercase tracking-widest">Persistence Service :8082</h2>
-
-          <div class="space-y-2">
-            <p class="text-xs text-gray-600">GET /api/stats</p>
-            <UButton size="sm" block @click="getStats">Get total stats</UButton>
-          </div>
-
-          <hr class="border-gray-800" />
-
-          <div class="space-y-2">
-            <p class="text-xs text-gray-600">POST /api/stats/game</p>
-            <div class="grid grid-cols-2 gap-2">
-              <UInput v-model="gameForm.player1Name" size="sm" placeholder="player1" />
-              <UInput v-model="gameForm.player2Name" size="sm" placeholder="player2" />
-              <UInput v-model.number="gameForm.player1Score" size="sm" type="number" placeholder="score 1" />
-              <UInput v-model.number="gameForm.player2Score" size="sm" type="number" placeholder="score 2" />
+        <UCard>
+          <template #header>
+            <span class="text-xs font-semibold text-purple-400 uppercase tracking-widest">Persistence Service :8082</span>
+          </template>
+          <div class="space-y-4">
+            <div class="space-y-2">
+              <p class="text-xs text-gray-600">GET /api/stats</p>
+              <UButton size="sm" block @click="getStats">Get total stats</UButton>
             </div>
-            <UButton size="sm" block @click="addGame">Add game</UButton>
-          </div>
 
-          <hr class="border-gray-800" />
+            <USeparator />
 
-          <div class="space-y-2">
-            <p class="text-xs text-gray-600">GET /api/stats/my-games (needs token)</p>
-            <UButton size="sm" block variant="outline" :disabled="!token" @click="getMyGames">Get my games</UButton>
+            <div class="space-y-2">
+              <p class="text-xs text-gray-600">POST /api/stats/game</p>
+              <div class="grid grid-cols-2 gap-2">
+                <UInput v-model="gameForm.player1Name" size="sm" placeholder="player1" />
+                <UInput v-model="gameForm.player2Name" size="sm" placeholder="player2" />
+                <UInput v-model.number="gameForm.player1Score" size="sm" type="number" placeholder="score 1" />
+                <UInput v-model.number="gameForm.player2Score" size="sm" type="number" placeholder="score 2" />
+              </div>
+              <UButton size="sm" block @click="addGame">Add game</UButton>
+            </div>
+
+            <USeparator />
+
+            <div class="space-y-2">
+              <p class="text-xs text-gray-600">GET /api/stats/my-games (needs token)</p>
+              <UButton size="sm" block variant="outline" :disabled="!token" @click="getMyGames">Get my games</UButton>
+            </div>
           </div>
-        </div>
+        </UCard>
 
         <!-- ── Game Service WebSocket ── -->
-        <div class="rounded-xl bg-gray-900 border border-gray-800 p-5 space-y-4">
-          <div class="flex items-center justify-between">
-            <h2 class="text-xs font-semibold text-green-400 uppercase tracking-widest">Game Service :8080</h2>
-            <span
-              class="text-xs font-mono"
-              :class="wsStatus === 'connected' ? 'text-green-400' : wsStatus === 'connecting' ? 'text-yellow-400' : 'text-gray-600'"
-            >● {{ wsStatus }}</span>
-          </div>
+        <UCard>
+          <template #header>
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-green-400 uppercase tracking-widest">Game Service :8080</span>
+              <span
+                class="text-xs font-mono"
+                :class="wsStatus === 'connected' ? 'text-green-400' : wsStatus === 'connecting' ? 'text-yellow-400' : 'text-gray-600'"
+              >● {{ wsStatus }}</span>
+            </div>
+          </template>
+          <div class="space-y-4">
+            <div class="space-y-2">
+              <p class="text-xs text-gray-600">WebSocket → createRoom</p>
+              <UInput v-model="roomId" size="sm" placeholder="Room ID (e.g. room-1)" />
+              <UButton size="sm" block color="primary" :disabled="wsStatus !== 'disconnected' || !roomId" @click="connectAndCreate">
+                Connect + Create Room
+              </UButton>
+              <UButton size="sm" block color="neutral" variant="outline" :disabled="wsStatus === 'disconnected'" @click="wsDisconnect">
+                Disconnect
+              </UButton>
+            </div>
 
-          <div class="space-y-2">
-            <p class="text-xs text-gray-600">WebSocket → createRoom</p>
-            <UInput v-model="roomId" size="sm" placeholder="Room ID (e.g. room-1)" />
-            <UButton size="sm" block color="primary" :disabled="wsStatus !== 'disconnected' || !roomId" @click="connectAndCreate">
-              Connect + Create Room
-            </UButton>
-            <UButton size="sm" block color="neutral" variant="outline" :disabled="wsStatus === 'disconnected'" @click="wsDisconnect">
-              Disconnect
-            </UButton>
-          </div>
+            <USeparator />
 
-          <hr class="border-gray-800" />
-
-          <div class="space-y-2">
-            <p class="text-xs text-gray-600">Send JOIN / LEAVE to room</p>
-            <UInput v-model="wsUsername" size="sm" placeholder="username" />
-            <div class="grid grid-cols-2 gap-2">
-              <UButton size="sm" :disabled="wsStatus !== 'connected' || !wsUsername" @click="sendAction('JOIN')">Join</UButton>
-              <UButton size="sm" color="neutral" variant="outline" :disabled="wsStatus !== 'connected' || !wsUsername" @click="sendAction('LEAVE')">Leave</UButton>
+            <div class="space-y-2">
+              <p class="text-xs text-gray-600">Send JOIN / LEAVE to room</p>
+              <UInput v-model="wsUsername" size="sm" placeholder="username" />
+              <div class="grid grid-cols-2 gap-2">
+                <UButton size="sm" :disabled="wsStatus !== 'connected' || !wsUsername" @click="sendAction('JOIN')">Join</UButton>
+                <UButton size="sm" color="neutral" variant="outline" :disabled="wsStatus !== 'connected' || !wsUsername" @click="sendAction('LEAVE')">Leave</UButton>
+              </div>
             </div>
           </div>
-        </div>
+        </UCard>
+
       </div>
 
       <!-- Response Log -->
-      <div class="rounded-xl bg-gray-900 border border-gray-800 p-5">
-        <div class="flex items-center justify-between mb-3">
-          <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-widest">Response Log</h2>
-          <UButton size="xs" color="neutral" variant="ghost" @click="log = []">Clear</UButton>
-        </div>
+      <UCard>
+        <template #header>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-gray-500 uppercase tracking-widest">Response Log</span>
+            <UButton size="xs" color="neutral" variant="ghost" @click="log = []">Clear</UButton>
+          </div>
+        </template>
         <p v-if="!log.length" class="text-sm text-gray-700 italic">No responses yet.</p>
         <div v-for="(entry, i) in log" :key="i" class="mb-3 text-xs">
           <span :class="entry.ok ? 'text-green-400' : 'text-red-400'" class="font-semibold">{{ entry.section }}</span>
           <pre class="mt-1 p-2 rounded bg-gray-950 border border-gray-800 text-gray-300 overflow-x-auto whitespace-pre-wrap font-mono">{{ entry.data }}</pre>
         </div>
-      </div>
+      </UCard>
 
     </div>
   </div>

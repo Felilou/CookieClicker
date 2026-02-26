@@ -62,7 +62,7 @@ const joinableStates: State[] = ['WAITING_FOR_PLAYERS']
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-950 text-gray-100">
+  <div class="min-h-screen">
 
     <!-- Header -->
     <header class="border-b border-gray-800 px-6 py-3">
@@ -74,6 +74,15 @@ const joinableStates: State[] = ['WAITING_FOR_PLAYERS']
         <div class="flex items-center gap-3">
           <UAvatar :text="username?.slice(0, 2).toUpperCase()" size="sm" />
           <span class="text-sm text-gray-300">{{ username }}</span>
+          <UButton
+            size="xs"
+            color="neutral"
+            variant="ghost"
+            icon="i-lucide-bar-chart-2"
+            @click="router.push('/stats')"
+          >
+            Stats
+          </UButton>
           <UButton
             size="xs"
             color="neutral"
