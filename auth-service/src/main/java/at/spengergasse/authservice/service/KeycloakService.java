@@ -148,6 +148,36 @@ public class KeycloakService {
         }
     }
 
+    public TokenResponse refreshToken(String refreshToken) {
+        log.info("Attempting to refresh token");
+
+        String tokenUrl = String.format("%s/realms/%s/protocol/openid-connect/token",
+                authServerUrl, realm);
+
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        formData.add("client_id", clientId);
+        formData.add("client_secret", clientSecret);
+        formData.add("grant_type", "refresh_token");
+        formData.add("refresh_token", refreshToken);
+
+        try {
+            TokenResponse response = webClientBuilder.build()
+                    .post()
+                    .uri(tokenUrl)
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .body(BodyInserters.fromFormData(formData))
+                    .retrieve()
+                    .bodyToMono(TokenResponse.class)
+                    .block();
+
+            log.info("Token refreshed successfully");
+            return response;
+        } catch (Exception e) {
+            log.error("Token refresh failed", e);
+            throw new RuntimeException("Token refresh failed: " + e.getMessage());
+        }
+    }
+
     private String getAdminAccessToken() {
         log.info("Getting admin access token");
 

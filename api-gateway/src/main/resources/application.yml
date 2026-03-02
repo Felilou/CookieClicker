@@ -5,23 +5,27 @@ spring:
     import: optional:file:.env[.properties]
   cloud:
     gateway:
-      routes:
-        - id: auth-service
-          uri: lb://auth-service
-          predicates:
-            - Path=/auth/**
-        - id: game-service-rest
-          uri: lb://game-service
-          predicates:
-            - Path=/api/rooms/**
-        - id: game-service-ws
-          uri: lb://game-service
-          predicates:
-            - Path=/ws/**
-        - id: persistance-service
-          uri: lb://persistance-service
-          predicates:
-            - Path=/api/stats/**
+      server:
+        webflux:
+          default-filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin, RETAIN_FIRST
+          routes:
+            - id: auth-service
+              uri: lb://auth-service
+              predicates:
+                - Path=/auth/**
+            - id: game-service-rest
+              uri: lb://game-service
+              predicates:
+                - Path=/api/rooms/**
+            - id: game-service-ws
+              uri: lb:ws://game-service
+              predicates:
+                - Path=/ws/**
+            - id: persistance-service
+              uri: lb://persistance-service
+              predicates:
+                - Path=/api/stats/**
 
 server:
   port: ${GATEWAY_PORT:8090}

@@ -42,6 +42,18 @@ public class AuthController {
         return ResponseEntity.ok(tokenResponse);
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<TokenResponse> refresh(@RequestBody Map<String, String> body) {
+        log.info("Token refresh request received");
+        try {
+            TokenResponse tokenResponse = keycloakService.refreshToken(body.get("refresh_token"));
+            return ResponseEntity.ok(tokenResponse);
+        } catch (RuntimeException e) {
+            log.error("Token refresh failed: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
     @GetMapping("/username")
     public ResponseEntity<Map<String, String>> getUsername(
             @RequestHeader("Authorization") String authHeader) {
