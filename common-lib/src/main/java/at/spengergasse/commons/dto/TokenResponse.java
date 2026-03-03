@@ -1,4 +1,4 @@
-package at.spengergasse.authservice.dto;
+package at.spengergasse.commons.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

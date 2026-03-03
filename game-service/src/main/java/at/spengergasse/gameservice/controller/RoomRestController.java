@@ -1,6 +1,6 @@
 package at.spengergasse.gameservice.controller;
 
-import at.spengergasse.gameservice.dto.RoomInfo;
+import at.spengergasse.commons.dto.RoomInfo;
 import at.spengergasse.gameservice.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

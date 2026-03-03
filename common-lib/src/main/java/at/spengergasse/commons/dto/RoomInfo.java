@@ -1,6 +1,6 @@
-package at.spengergasse.gameservice.dto;
+package at.spengergasse.commons.dto;
 
-import at.spengergasse.gameservice.model.State;
+import at.spengergasse.commons.model.State;
 
 public record RoomInfo(
         String roomId,
@@ -8,3 +8,4 @@ public record RoomInfo(
         int playerCount,
         State state
 ) {}
+

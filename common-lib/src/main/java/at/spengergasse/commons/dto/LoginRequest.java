@@ -1,4 +1,4 @@
-package at.spengergasse.authservice.dto;
+package at.spengergasse.commons.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterResponse {
-    private String userId;
+public class LoginRequest {
     private String username;
-    private String message;
+    private String password;
 }
 

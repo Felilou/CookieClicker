@@ -1,7 +1,8 @@
 package at.spengergasse.persistanceservice.service;
 
-import at.spengergasse.persistanceservice.dto.GameDTO;
-import at.spengergasse.persistanceservice.dto.PersistGameRequest;
+import at.spengergasse.commons.dto.GameDTO;
+import at.spengergasse.commons.dto.PlayerScore;
+import at.spengergasse.commons.dto.SaveGameRequest;
 import at.spengergasse.persistanceservice.model.Game;
 import at.spengergasse.persistanceservice.model.PlayerResult;
 import at.spengergasse.persistanceservice.repository.GameRepository;
@@ -31,7 +32,7 @@ public class StatsService {
                 .toList();
     }
 
-    public Game addGame(PersistGameRequest request) {
+    public Game addGame(SaveGameRequest request) {
         log.info("Adding game, winner: {}, players: {}", request.winnerUsername(), request.players().size());
 
         List<PlayerResult> results = request.players().stream()
@@ -48,8 +49,8 @@ public class StatsService {
     }
 
     private GameDTO toDTO(Game game) {
-        List<GameDTO.PlayerScore> players = game.getPlayerResults().stream()
-                .map(pr -> new GameDTO.PlayerScore(pr.getUsername(), pr.getScore()))
+        List<PlayerScore> players = game.getPlayerResults().stream()
+                .map(pr -> new PlayerScore(pr.getUsername(), pr.getScore()))
                 .toList();
         return new GameDTO(game.getWinnerUsername(), players, game.getTimestamp());
     }

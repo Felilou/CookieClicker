@@ -1,4 +1,4 @@
-package at.spengergasse.gameservice.model;
+package at.spengergasse.commons.model;
 
 public enum State {
     WAITING_FOR_PLAYERS,
@@ -6,3 +6,4 @@ public enum State {
     IN_PROGRESS,
     ENDED
 }
+

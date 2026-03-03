@@ -1,8 +1,8 @@
 package at.spengergasse.authservice.service;
 
-import at.spengergasse.authservice.dto.LoginRequest;
-import at.spengergasse.authservice.dto.RegisterRequest;
-import at.spengergasse.authservice.dto.TokenResponse;
+import at.spengergasse.commons.dto.LoginRequest;
+import at.spengergasse.commons.dto.RegisterRequest;
+import at.spengergasse.commons.dto.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

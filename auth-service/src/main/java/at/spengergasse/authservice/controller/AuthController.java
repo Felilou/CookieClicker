@@ -1,9 +1,9 @@
 package at.spengergasse.authservice.controller;
 
-import at.spengergasse.authservice.dto.LoginRequest;
-import at.spengergasse.authservice.dto.RegisterRequest;
-import at.spengergasse.authservice.dto.RegisterResponse;
-import at.spengergasse.authservice.dto.TokenResponse;
+import at.spengergasse.commons.dto.LoginRequest;
+import at.spengergasse.commons.dto.RegisterRequest;
+import at.spengergasse.commons.dto.RegisterResponse;
+import at.spengergasse.commons.dto.TokenResponse;
 import at.spengergasse.authservice.service.KeycloakService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

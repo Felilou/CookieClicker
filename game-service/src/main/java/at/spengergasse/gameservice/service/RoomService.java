@@ -1,8 +1,8 @@
 package at.spengergasse.gameservice.service;
 
+import at.spengergasse.commons.model.Message;
 import at.spengergasse.gameservice.client.PersistenceServiceClient;
 import at.spengergasse.gameservice.model.GameState;
-import at.spengergasse.gameservice.model.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

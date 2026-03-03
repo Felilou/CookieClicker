@@ -1,5 +1,6 @@
 package at.spengergasse.gameservice.model;
 
+import at.spengergasse.commons.model.State;
 import lombok.Getter;
 
 import java.util.LinkedHashMap;

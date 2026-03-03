@@ -1,7 +1,7 @@
 package at.spengergasse.gameservice.controller;
 
+import at.spengergasse.commons.model.Message;
 import at.spengergasse.gameservice.model.GameState;
-import at.spengergasse.gameservice.model.Message;
 import at.spengergasse.gameservice.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;

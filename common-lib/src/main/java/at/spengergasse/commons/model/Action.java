@@ -1,4 +1,4 @@
-package at.spengergasse.gameservice.model;
+package at.spengergasse.commons.model;
 
 public enum Action {
     JOIN,
@@ -6,3 +6,4 @@ public enum Action {
     CLICK,
     START_GAME,
 }
+

@@ -1,9 +1,9 @@
 package at.spengergasse.persistanceservice.controller;
 
 import at.spengergasse.persistanceservice.client.AuthServiceClient;
-import at.spengergasse.persistanceservice.dto.GameDTO;
-import at.spengergasse.persistanceservice.dto.PersistGameRequest;
-import at.spengergasse.persistanceservice.dto.StatsResponse;
+import at.spengergasse.commons.dto.GameDTO;
+import at.spengergasse.commons.dto.SaveGameRequest;
+import at.spengergasse.commons.dto.StatsResponse;
 import at.spengergasse.persistanceservice.service.StatsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public class StatsController {
     }
 
     @PostMapping("/game")
-    public ResponseEntity<Void> addGame(@RequestBody PersistGameRequest request) {
+    public ResponseEntity<Void> addGame(@RequestBody SaveGameRequest request) {
         log.info("Add game request received: {}", request);
 
         long id = statsService.addGame(request).getId();
